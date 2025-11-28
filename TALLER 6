@@ -1,0 +1,35 @@
+section .data
+msg db "Valor positivo",0
+neg db "Valor negativo",0
+section .bss
+valor resb 1
+
+section .text
+global _start
+
+_start:
+mov al, 5
+cmp al, 0 ; Comparamos AL con 0
+jg positivo ; Saltamos si AL > 0
+jl negativo ; Saltamos si AL < 0
+
+positivo:
+mov eax, 4
+mov ebx, 1
+mov ecx, msg
+mov edx, 16
+int 0x80
+jmp fin
+
+negativo:
+mov eax, 4
+mov ebx, 1
+mov ecx, neg
+mov edx, 16
+int 0x80
+jmp fin
+
+fin:
+mov eax, 1
+xor ebx, ebx
+int 0x80
