@@ -1,0 +1,65 @@
+section .text
+global _start
+
+_start:
+    mov eax, 10
+    mov ebx, 0
+
+TRY_BLOCK:
+    cmp ebx, 0
+    je THROW_ERROR      ; Si división entre cero, lanza "excepción"
+
+    div ebx             ; Operación "peligrosa"
+    jmp END_TRY
+
+THROW_ERROR:
+    jmp CATCH_BLOCK     ; Simula el catch
+
+CATCH_BLOCK:
+    mov eax, -1         ; Valor de error
+    ; Aquí iría la lógica de manejo del error
+    jmp END_TRY
+
+END_TRY:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
+#include <stdio.h>
+#include <setjmp.h>
+
+jmp_buf buffer;
+
+void funcionPeligrosa() {
+    int x = 0;
+    if (x == 0) {
+        printf("Error detectado, saltando al catch...\n");
+        longjmp(buffer, 1);
+    }
+}
+
+int main() {
+    if (setjmp(buffer) == 0) {
+        printf("TRY: Ejecutando código...\n");
+        funcionPeligrosa();
+        printf("Esto no se ejecutará si ocurre error.\n");
+    } else {
+        printf("CATCH: Se manejó la excepción correctamente.\n");
+    }
+
+    return 0;
+}
+#include <stdio.h>
+
+int suma(int a, int b) {
+    int resultado = a + b;  // <--- BREAKPOINT AQUÍ
+    return resultado;
+}
+
+int main() {
+    int x = 5;              // <--- BREAKPOINT AQUÍ
+    int y = 7;
+    int r = suma(x, y);     // <--- BREAKPOINT AQUÍ
+
+    printf("Resultado = %d\n", r);  // <--- BREAKPOINT AQUÍ
+    return 0;
+}
