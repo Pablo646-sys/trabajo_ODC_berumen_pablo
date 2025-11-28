@@ -1,0 +1,168 @@
+Stack Pointer (SP / ESP / RSP)
+Definición: Es un registro que apunta a la parte superior de la
+pila (stack) en memoria.
+
+Uso: Se utiliza para controlar las operaciones de push (apilar)
+y pop (desapilar). Cada vez que se guarda o recupera un
+valor de la pila, el Stack Pointer se actualiza
+automáticamente.
+
+Ejemplo:
+
+PUSH AX ; Guarda el valor de AX en la pila
+POP AX ; Recupera el valor anterior de AX
+
+2. Base Pointer (BP / EBP / RBP)
+
+Definición: Es un registro que marca una posición base en la
+pila, comúnmente utilizado para acceder a variables locales o
+parámetros de funciones.
+
+Uso: Facilita el acceso a datos almacenados en la pila
+durante la ejecución de funciones.
+
+Ejemplo:
+
+MOV AX, [BP+4] ; Accede a un parámetro pasado
+a la función
+
+3. Instruction Pointer (IP / EIP / RIP)
+Definición: Registro que contiene la dirección de la siguiente
+instrucción que será ejecutada.
+
+Uso: El procesador lo utiliza para saber qué instrucción
+ejecutar a continuación. Se actualiza automáticamente tras
+cada instrucción.
+
+Ejemplo:
+Cuando ocurre un salto (JMP, CALL), el IP cambia al destino
+
+indicado.
+
+4. Carry Flag (CF)
+Definición: Bandera que indica si hubo acarreo o préstamo en
+una operación aritmética.
+
+Uso: Es importante en operaciones de números grandes o en
+cálculos binarios.
+
+Ejemplo:
+
+ADD AL, BL ; Si hay acarreo, CF = 1
+
+5. Auxiliary Carry Flag (AF)
+Definición: Indica si hubo un acarreo entre los bits 3 y 4 de un
+byte durante una operación.
+
+Uso: Se usa en operaciones BCD (decimal codificado en
+binario).
+
+Ejemplo:
+Usado en instrucciones como DAA (Decimal Adjust after
+Addition).
+
+6. Parity Flag (PF)
+Definición: Indica si el número de bits en 1 del resultado es
+par (PF=1) o impar (PF=0).
+
+Uso: Se usa en verificación de errores o para optimizar
+operaciones de control.
+
+7. Overflow Flag (OF)
+Definición: Se activa cuando el resultado de una operación
+aritmética excede la capacidad del registro.
+
+Uso: Detecta errores de signo en operaciones con números
+con signo.
+
+Ejemplo:
+
+ADD AL, BL ; Si el resultado excede el rango
+de AL, OF = 1
+
+8. Sign Flag (SF)
+Definición: Indica el signo del resultado de una operación
+aritmética.
+
+Uso: Si el bit más significativo del resultado es 1 → número
+negativo.
+
+Ejemplo:
+
+SUB AX, BX ; Si el resultado es negativo, SF
+= 1
+
+9. Zero Flag (ZF)
+Definición: Indica si el resultado de una operación es cero.
+
+Uso: Común en estructuras condicionales o bucles.
+
+Ejemplo:
+
+CMP AX, BX
+
+JE etiqueta ; Salta si ZF = 1 (AX == BX)
+
+10. Direction Flag (DF)
+Definición: Controla la dirección de procesamiento de
+cadenas (hacia adelante o hacia atrás).
+
+Uso:
+
+DF = 0 → Se procesan de izquierda a derecha.
+
+DF = 1 → Se procesan de derecha a izquierda.
+
+Ejemplo:
+
+CLD ; Limpia DF (dirección hacia adelante)
+STD ; Establece DF (dirección hacia atrás)
+
+11. Interrupt Flag (IF)
+
+Definición: Permite o bloquea la atención de interrupciones
+externas.
+
+Uso:
+
+IF = 1 → Las interrupciones están habilitadas.
+
+IF = 0 → Las interrupciones están deshabilitadas.
+
+Ejemplo:
+
+CLI ; Deshabilita interrupciones
+STI ; Habilita interrupciones
+
+12. Code Segment (CS)
+Definición: Registro que indica la dirección base del segmento
+de código, donde se almacenan las instrucciones del
+programa.
+
+Uso: Junto con IP, determina la instrucción que se ejecuta.
+
+13. Data Segment (DS)
+Definición: Registro que indica el segmento donde se guardan
+variables y datos del programa.
+
+Uso: Se combina con otros registros para acceder a datos.
+
+Ejemplo:
+
+MOV AX, [DS:BX] ; Accede a un dato en el
+segmento de datos
+
+14. Extra Segment (ES)
+Definición: Segmento auxiliar para operaciones de
+transferencia de datos entre áreas de memoria.
+
+Uso: Muy usado con instrucciones de movimiento de cadenas
+como MOVS o STOS.
+
+15. Stack Segment (SS)
+
+Definición: Segmento de memoria reservado para la pila
+(stack).
+
+Uso: Trabaja junto con SP y BP para almacenar direcciones
+de retorno, parámetros y variables
