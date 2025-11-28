@@ -1,0 +1,108 @@
+shl:
+section .data
+char db 0
+newline db 10
+section .text
+global _start
+_start:
+mov al, 112 ; AL = 112
+shl al, 1 ; Desplaza a la izquierda 1 vez → AL = 224
+mov [char], al
+; Escribir carácter
+mov eax, 4
+mov ebx, 1
+mov ecx, char
+mov edx, 1
+int 0x80
+; Nueva línea
+mov eax, 4
+mov ebx, 1
+mov ecx, newline
+mov edx, 1
+int 0x80
+; Salir
+mov eax, 1
+xor ebx, ebx
+int 0x80
+
+shr:
+section .data
+char db 0
+newline db 10
+section .text
+global _start
+_start:
+mov al, 112 ; AL = 112
+shr al, 1 ; Desplaza a la derecha 1 vez → AL = 56
+mov [char], al
+; Escribir carácter
+mov eax, 4
+mov ebx, 1
+mov ecx, char
+mov edx, 1
+int 0x80
+; Nueva línea
+mov eax, 4
+mov ebx, 1
+mov ecx, newline
+mov edx, 1
+int 0x80
+; Salir
+mov eax, 1
+xor ebx, ebx
+int 0x80
+
+ro:
+section .data
+char db 0
+newline db 10
+section .text
+global _start
+_start:
+
+mov al, 112 ; AL = 112
+rol al, 1 ; Rota a la izquierda 1 vez → AL = 224
+mov [char], al
+; Escribir carácter
+mov eax, 4
+mov ebx, 1
+mov ecx, char
+mov edx, 1
+int 0x80
+; Nueva línea
+mov eax, 4
+mov ebx, 1
+mov ecx, newline
+mov edx, 1
+int 0x80
+; Salir
+mov eax, 1
+xor ebx, ebx
+int 0x80
+ror:
+section .data
+char db 0
+newline db 10
+section .text
+global _start
+_start:
+mov al, 112 ; AL = 112
+ror al, 1 ; Rota a la derecha 1 vez → AL = 56
+mov [char], al
+; Escribir carácter
+mov eax, 4
+mov ebx, 1
+mov ecx, char
+mov edx, 1
+int 0x80
+
+; Nueva línea
+mov eax, 4
+mov ebx, 1
+mov ecx, newline
+mov edx, 1
+int 0x80
+; Salir
+mov eax, 1
+xor ebx, ebx
+int 0x80
