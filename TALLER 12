@@ -1,0 +1,167 @@
+; ----------------------------------------------
+; EJEMPLO DE ESTRUCTURA TIPO X/X/X
+; Cada X es un número y el programa suma los 3.
+; Incluye un macro para imprimir cadenas.
+; No es necesario que compile sin errores.
+; ----------------------------------------------
+
+section .data
+    estructura db "12/34/56", 0     ; Simula estructura X/X/X como cadena
+    mensaje db "La suma es: ", 0
+    salto db 10, 0
+
+section .bss
+    num1 resb 3
+    num2 resb 3
+    num3 resb 3
+    buffer resb 4
+
+section .text
+    global _start
+
+; -------------------------
+; MACRO PARA IMPRIMIR STRING
+; -------------------------
+%macro PRINT 1
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, %1
+    mov edx, 20
+    int 0x80
+%endmacro
+
+_start:
+
+    ; -------------------------
+    ; SEPARAR LOS VALORES X/X/X
+    ; -------------------------
+    mov esi, estructura
+    
+    ; copiar primer número (antes del primer '/')
+    mov edi, num1
+copiar1:
+    lodsb
+    cmp al, '/'
+    je siguiente_numero1
+    stosb
+    jmp copiar1
+
+siguiente_numero1:
+    mov byte [edi], 0
+
+    ; copiar segundo número
+    mov edi, num2
+copiar2:
+    lodsb
+    cmp al, '/'
+    je siguiente_numero2
+    stosb
+    jmp copiar2
+
+siguiente_numero2:
+    mov byte [edi], 0
+
+    ; copiar tercer número
+    mov edi, num3
+copiar3:
+    lodsb
+    cmp al, 0
+    je fin_copia
+    stosb
+    jmp copiar3
+
+fin_copia:
+    mov byte [edi], 0
+
+    ; -------------------------
+    ; CONVERTIR Y SUMAR
+    ; -------------------------
+    ; num1 → eax
+    mov eax, 0
+    mov esi, num1
+convert1:
+    lodsb
+    cmp al, 0
+    je fin1
+    sub al, '0'
+    imul eax, 10
+    add eax, eax
+    add eax, al
+    jmp convert1
+fin1:
+    mov ebx, eax      ; guardar valor 1 en ebx
+
+    ; num2 → ecx
+    mov ecx, 0
+    mov esi, num2
+convert2:
+    lodsb
+    cmp al, 0
+    je fin2
+    sub al, '0'
+    imul ecx, 10
+    add ecx, ecx
+    add ecx, al
+    jmp convert2
+fin2:
+
+    ; num3 → edx
+    mov edx, 0
+    mov esi, num3
+convert3:
+    lodsb
+    cmp al, 0
+    je fin3
+    sub al, '0'
+    imul edx, 10
+    add edx, edx
+    add edx, al
+    jmp convert3
+fin3:
+
+    ; suma total → eax
+    add eax, ebx
+    add eax, ecx
+    add eax, edx
+
+    ; --------------------------------
+    ; IMPRIMIR MENSAJE Y LA SUMA
+    ; --------------------------------
+    PRINT mensaje
+
+    ; convertir suma a ascii
+    mov edi, buffer
+    mov ecx, 0
+convertir_ascii:
+    mov ebx, 10
+    xor edx, edx
+    div ebx
+    add edx, '0'
+    mov [edi], dl
+    inc edi
+    inc ecx
+    cmp eax, 0
+    jne convertir_ascii
+
+    ; invertir número
+    mov ebx, buffer
+    add ebx, ecx
+    dec ebx
+imprime_suma:
+    mov al, [ebx]
+    mov [buffer + 4], al
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, buffer + 4
+    mov edx, 1
+    int 0x80
+    dec ebx
+    dec ecx
+    loop imprime_suma
+
+    PRINT salto
+
+    ; salir
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
