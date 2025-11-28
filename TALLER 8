@@ -1,0 +1,194 @@
+1. Comparador de Números: Escribir un programa que
+reciba dos números y determine si son iguales, si uno es
+mayor que el otro, o si son negativos.
+; Programa: Comparador de dos números
+; Objetivo: Determinar si son iguales, si uno es mayor, o
+si son negativos
+
+MOV AX, num1 ; Cargar primer número
+MOV BX, num2 ; Cargar segundo número
+CMP AX, BX ; Compara AX - BX
+
+JE SON_IGUALES ; Si ZF=1, son iguales
+JG MAYOR ; Si SF=0 y ZF=0, AX > BX
+JL MENOR ; Si SF=1, AX < BX
+
+SON_IGUALES:
+; (mensaje) “Los números son iguales”
+JMP FIN
+
+MAYOR:
+; (mensaje) “El primer número es mayor”
+JMP VERIFICAR_SIGNO
+
+MENOR:
+; (mensaje) “El segundo número es mayor”
+
+VERIFICAR_SIGNO:
+TEST AX, AX
+JS NEGATIVO_AX
+
+TEST BX, BX
+JS NEGATIVO_BX
+JMP FIN
+
+NEGATIVO_AX:
+; (mensaje) “El primer número es negativo”
+JMP FIN
+
+NEGATIVO_BX:
+; (mensaje) “El segundo número es negativo”
+
+FIN:
+; Fin del programa
+
+2. Clasificación de Números: Leer un número y
+clasificarlo como positivo, negativo o cero.
+; Clasifica un número como positivo, negativo o cero
+
+MOV AX, num
+CMP AX, 0
+JE CERO
+JS NEGATIVO
+JNS POSITIVO
+
+CERO:
+; “El número es cero”
+JMP FIN
+
+NEGATIVO:
+
+; “El número es negativo”
+JMP FIN
+
+POSITIVO:
+; “El número es positivo”
+FIN:
+
+3. Par o Impar: Leer un número y determinar si es par o
+impar usando únicamente la bandera de paridad (PF).
+; Determina si un número es par o impar usando la bandera PF
+
+MOV AL, num
+TEST AL, 1 ; Verifica el bit menos significativo
+; La bandera de paridad (PF) indica si el número de bits en 1 del resultado es par
+
+JP PAR ; Si PF=1 → par
+JNP IMPAR ; Si PF=0 → impar
+
+PAR:
+; “El número es par”
+JMP FIN
+
+IMPAR:
+; “El número es impar”
+FIN:
+
+4. Simulación de Overflow: Pedir dos números y
+sumarlos, verificando si ocurre desbordamiento con la
+bandera OF (Overflow Flag). Imprimir un mensaje si se
+detecta overflow.
+
+; Detectar overflow al sumar dos números con bandera OF
+
+MOV AL, num1
+ADD AL, num2
+JO DESBORDAMIENTO ; Si OF=1 → ocurrió overflow
+JNO SIN_OVERFLOW ; Si OF=0 → no hubo overflow
+
+DESBORDAMIENTO:
+; “Se detectó un desbordamiento (overflow)”
+JMP FIN
+
+SIN_OVERFLOW:
+; “No hubo desbordamiento”
+FIN:
+
+5. Simulación de Acarreo: Realizar una suma entre dos
+números y verificar si hay un acarreo con la bandera CF
+(Carry Flag). Mostrar si se generó un acarreo o no.
+; Detectar acarreo con la bandera CF
+
+MOV AL, num1
+ADD AL, num2
+JC ACARREO ; Si CF=1 → hay acarreo
+JNC SIN_ACARREO ; Si CF=0 → no hay acarreo
+
+ACARREO:
+; “Se generó un acarreo”
+JMP FIN
+
+SIN_ACARREO:
+; “No se generó acarreo”
+FIN:
+
+6. Mínimo y Máximo de Tres Números: Leer tres números
+e identificar el menor y el mayor.
+; Identificar el menor y el mayor de tres números
+
+MOV AX, num1
+MOV BX, num2
+MOV CX, num3
+
+; --- Buscar máximo ---
+CMP AX, BX
+JL MAYOR_BX
+JGE SIG_MAX
+
+MAYOR_BX:
+MOV AX, BX
+SIG_MAX:
+CMP AX, CX
+JL MAYOR_CX
+JMP SIG_MIN
+MAYOR_CX:
+MOV AX, CX
+SIG_MIN:
+MOV DX, AX ; DX = máximo
+
+; --- Buscar mínimo ---
+MOV AX, num1
+
+CMP AX, BX
+JG MENOR_BX
+JLE SIG_MIN2
+MENOR_BX:
+MOV AX, BX
+SIG_MIN2:
+CMP AX, CX
+JG MENOR_CX
+JMP FIN
+MENOR_CX:
+MOV AX, CX
+
+; AX = mínimo, DX = máximo
+FIN:
+
+7. Ordenamiento de Dos Números
+Leer dos números e intercambiarlos si no están en orden
+ascendente usando solo saltos condicionales.
+; Ordenar dos números en orden ascendente
+
+MOV AX, num1
+MOV BX, num2
+CMP AX, BX
+JLE ORDENADOS ; Si ya están en orden, saltar
+XCHG AX, BX ; Si no, intercambiarlos
+
+ORDENADOS:
+; AX <= BX
+FIN:
+
+8. Ciclo de Conteo sin Comparaciones: Implementar un
+contador de 0 a 9.
+; Contador de 0 a 9 sin comparaciones
+
+MOV CX, 10 ; Contar 10 veces
+MOV AL, 0
+
+CICLO:
+; Mostrar AL
+INC AL
+LOOP CICLO ; Usa CX como contador automático (decrementa y salta si no llega a 0)
+
+FIN:
