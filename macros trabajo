@@ -1,0 +1,69 @@
+; ============================================
+;   EJEMPLO DE ESTRUCTURA TIPO X/X/X
+;   DONDE CADA X ES UN NÚMERO
+;   Y SE SUMAN MEDIANTE UN MACRO
+; ============================================
+
+%macro SUMAR 3
+    mov eax, %1
+    add eax, %2
+    add eax, %3
+%endmacro
+
+section .data
+    estructura db "10/20/30", 0
+
+section .bss
+    num1 resb 3
+    num2 resb 3
+    num3 resb 3
+    buffer resb 16
+
+section .text
+    global _start
+
+_start:
+
+    ; Obtener primer número
+    mov esi, estructura
+    mov edi, num1
+copiar1:
+    lodsb
+    cmp al, '/'
+    je siguiente1
+    stosb
+    jmp copiar1
+siguiente1:
+
+    ; Obtener segundo número
+    mov edi, num2
+copiar2:
+    lodsb
+    cmp al, '/'
+    je siguiente2
+    stosb
+    jmp copiar2
+siguiente2:
+
+    ; Obtener tercer número
+    mov edi, num3
+copiar3:
+    lodsb
+    cmp al, 0
+    je finLectura
+    stosb
+    jmp copiar3
+finLectura:
+
+    ; Convertir a enteros (muy simplificado)
+    mov eax, [num1]
+    mov ebx, [num2]
+    mov ecx, [num3]
+
+    ; Usar MACRO para sumar
+    SUMAR eax, ebx, ecx
+
+    ; Terminar el programa
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
